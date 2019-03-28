@@ -1,4 +1,13 @@
-import _ from 'lodash'
+import _isArray from 'lodash/isArray';
+import _isPlainObject from 'lodash/isPlainObject';
+import _each from 'lodash/each';
+import _cloneDeep from 'lodash/cloneDeep';
+import _isEmpty from 'lodash/isEmpty';
+import _set from 'lodash/set';
+import _isString from 'lodash/isString';
+import _merge from 'lodash/merge';
+
+
 import queryBuilder from './query-builder'
 import filterBuilder from './filter-builder'
 import aggregationBuilder from './aggregation-builder'
@@ -118,18 +127,18 @@ export default function bodybuilder () {
       sort(field, direction = 'asc') {
         body.sort = body.sort || []
 
-        if (_.isArray(field)) {
+        if (_isArray(field)) {
 
-            if(_.isPlainObject(body.sort)) {
+            if(_isPlainObject(body.sort)) {
                 body.sort = [body.sort]
             }
 
-            if(_.isArray(body.sort)) {
-                _.each(field, (sorts) => {
-                    if(_.isString(sorts)) {
+            if(_isArray(body.sort)) {
+                _each(field, (sorts) => {
+                    if(_isString(sorts)) {
                         return sortMerge(body.sort, sorts, direction)
                     }
-                    _.each(sorts, (value, key) => {
+                    _each(sorts, (value, key) => {
                         sortMerge(body.sort, key, value)
                     })
                 })
@@ -204,44 +213,44 @@ export default function bodybuilder () {
 }
 
 function _buildV1(body, queries, filters, aggregations) {
-  let clonedBody = _.cloneDeep(body)
+  let clonedBody = _cloneDeep(body)
 
-  if (!_.isEmpty(filters)) {
-    _.set(clonedBody, 'query.filtered.filter', filters)
+  if (!_isEmpty(filters)) {
+    _set(clonedBody, 'query.filtered.filter', filters)
 
-    if (!_.isEmpty(queries)) {
-      _.set(clonedBody, 'query.filtered.query', queries)
+    if (!_isEmpty(queries)) {
+      _set(clonedBody, 'query.filtered.query', queries)
     }
 
-  } else if (!_.isEmpty(queries)) {
-    _.set(clonedBody, 'query', queries)
+  } else if (!_isEmpty(queries)) {
+    _set(clonedBody, 'query', queries)
   }
 
-  if (!_.isEmpty(aggregations)) {
-    _.set(clonedBody, 'aggregations', aggregations)
+  if (!_isEmpty(aggregations)) {
+    _set(clonedBody, 'aggregations', aggregations)
   }
   return clonedBody
 }
 
 function _build(body, queries, filters, aggregations) {
-  let clonedBody = _.cloneDeep(body)
+  let clonedBody = _cloneDeep(body)
 
-  if (!_.isEmpty(filters)) {
+  if (!_isEmpty(filters)) {
     let filterBody = {}
     let queryBody = {}
-    _.set(filterBody, 'query.bool.filter', filters)
-    if (!_.isEmpty(queries.bool)) {
-      _.set(queryBody, 'query.bool', queries.bool)
-    } else if (!_.isEmpty(queries)) {
-      _.set(queryBody, 'query.bool.must', queries)
+    _set(filterBody, 'query.bool.filter', filters)
+    if (!_isEmpty(queries.bool)) {
+      _set(queryBody, 'query.bool', queries.bool)
+    } else if (!_isEmpty(queries)) {
+      _set(queryBody, 'query.bool.must', queries)
     }
-    _.merge(clonedBody, filterBody, queryBody)
-  } else if (!_.isEmpty(queries)) {
-    _.set(clonedBody, 'query', queries)
+    _merge(clonedBody, filterBody, queryBody)
+  } else if (!_isEmpty(queries)) {
+    _set(clonedBody, 'query', queries)
   }
 
-  if (!_.isEmpty(aggregations)) {
-    _.set(clonedBody, 'aggs', aggregations)
+  if (!_isEmpty(aggregations)) {
+    _set(clonedBody, 'aggs', aggregations)
   }
 
   return clonedBody

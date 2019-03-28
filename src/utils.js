@@ -1,4 +1,14 @@
-import _ from 'lodash'
+import _isPlainObject from 'lodash/isPlainObject';
+import _assign from 'lodash/assign';
+import _findIndex from 'lodash/findIndex';
+import _extend from 'lodash/extend';
+import _isNil from 'lodash/isNil';
+import _isObject from 'lodash/isObject';
+import _last from 'lodash/last';
+import _includes from 'lodash/includes';
+import _has from 'lodash/has';
+import _isFunction from 'lodash/isFunction';
+
 import queryBuilder from './query-builder'
 import filterBuilder from './filter-builder'
 
@@ -15,20 +25,20 @@ import filterBuilder from './filter-builder'
 export function sortMerge(current, field, value) {
   let payload
 
-  if (_.isPlainObject(value)) {
-    payload = { [field]: _.assign({}, value) }
+  if (_isPlainObject(value)) {
+    payload = { [field]: _assign({}, value) }
   } else {
     payload = { [field]: { order: value } }
   }
 
-  const idx = _.findIndex(current, function (o) {
+  const idx = _findIndex(current, function (o) {
     return o[field] != undefined
   })
 
   if (field === '_geo_distance' || idx === -1) {
     current.push(payload)
   } else {
-    _.extend(current[idx], payload)
+    _extend(current[idx], payload)
   }
 
   return current
@@ -46,13 +56,13 @@ export function sortMerge(current, field, value) {
  * @return {Object} Clause
  */
 export function buildClause (field, value, opts) {
-  const hasField = !_.isNil(field)
-  const hasValue = !_.isNil(value)
+  const hasField = !_isNil(field)
+  const hasValue = !_isNil(value)
   let mainClause = {}
 
   if (hasValue) {
     mainClause = {[field]: value}
-  } else if (_.isObject(field)) {
+  } else if (_isObject(field)) {
     mainClause = field
   } else if (hasField) {
     mainClause = {field}
@@ -101,12 +111,12 @@ export function toBool (filters) {
 }
 
 function unwrap (arr) {
-  return arr.length > 1 ? arr : _.last(arr)
+  return arr.length > 1 ? arr : _last(arr)
 }
 
 export function pushQuery (existing, boolKey, type, ...args) {
   const nested = {}
-  if (_.isFunction(_.last(args))) {
+  if (_isFunction(_last(args))) {
     const nestedCallback = args.pop()
     const nestedResult = nestedCallback(
       Object.assign(
@@ -126,9 +136,9 @@ export function pushQuery (existing, boolKey, type, ...args) {
   }
 
   if (
-    _.includes(['bool', 'constant_score'], type) &&
+   _includes(['bool', 'constant_score'], type) &&
     this.isInFilterContext &&
-    _.has(nested, 'filter.bool')
+    _has(nested, 'filter.bool')
   ) {
     // nesting filters: We've introduced an unnecessary `filter.bool`
     existing[boolKey].push(
@@ -136,7 +146,7 @@ export function pushQuery (existing, boolKey, type, ...args) {
     )
   } else if (
     type === 'bool' &&
-    _.has(nested, 'query.bool')
+    _has(nested, 'query.bool')
    ) {
     existing[boolKey].push(
       {[type]: Object.assign(buildClause(...args), nested.query.bool)}

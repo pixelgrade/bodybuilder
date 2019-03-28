@@ -1,4 +1,9 @@
-import _ from 'lodash'
+import _find from 'lodash/find';
+import _isString from 'lodash/isString';
+import _isPlainObject from 'lodash/isPlainObject';
+import _isFunction from 'lodash/isFunction';
+import _unset from 'lodash/unset';
+import _size from 'lodash/size';
 import { buildClause } from './utils'
 import filterBuilder from './filter-builder'
 
@@ -6,13 +11,13 @@ export default function aggregationBuilder () {
   let aggregations = {}
 
   function makeAggregation (type, field, ...args) {
-    const aggName = _.find(args, _.isString) || `agg_${type}_${field}`
-    const opts = _.find(args, _.isPlainObject)
-    const nested = _.find(args, _.isFunction)
+    const aggName = _find(args, _isString) || `agg_${type}_${field}`
+    const opts = _find(args, _isPlainObject)
+    const nested = _find(args, _isFunction)
     const nestedClause = {}
     const metadata = {}
 
-    if (_.isFunction(nested)) {
+    if (_isFunction(nested)) {
       const nestedResult = nested(Object.assign(
         {},
         aggregationBuilder(),
@@ -28,7 +33,7 @@ export default function aggregationBuilder () {
 
     if(opts && opts._meta) {
       Object.assign(metadata, { meta : opts._meta })
-      _.unset(opts, '_meta')
+      _unset(opts, '_meta')
     }
 
     const innerClause = Object.assign({}, {
@@ -109,7 +114,7 @@ export default function aggregationBuilder () {
     },
 
     hasAggregations () {
-      return !!_.size(aggregations)
+      return !!_size(aggregations)
     }
   }
 }

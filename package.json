@@ -1,45 +1,62 @@
 {
-  "name": "bodybuilder",
-  "version": "2.2.17",
-  "description": "An elasticsearch query body builder.",
-  "main": "lib/index.js",
-  "typings": "./bodybuilder.d.ts",
-  "files": [
-    "browser/",
-    "lib/",
-    "src/",
-    "bodybuilder.d.ts",
-    "repl.js"
-  ],
-  "scripts": {
-    "build:babel": "babel src --out-dir lib",
-    "build:umd": "webpack lib browser/bodybuilder.min.js",
-    "build:docs": "documentation build src/index.js -o docs -f html --name bodybuilder",
-    "build": "npm run build:babel && npm run build:umd && npm run build:docs",
-    "lint": "eslint src test",
-    "typescript-test": "tsc --project typing-tests",
-    "style": "npm run lint",
-    "test": "babel-tape-runner test/* | tap-spec && npm run typescript-test",
-    "watch:test": "tape-watch test/* -r babel-register -p tap-spec",
-    "check": "npm run lint && npm test",
-    "preversion": "npm run check && npm run build && npm run git-commit",
-    "postversion": "npm run git-push",
-    "git-commit": "git add docs browser && git commit -m \"Commit built files\"",
-    "git-push": "git push origin master && git push origin v$npm_package_version",
-    "add": "all-contributors add",
-    "generate": "all-contributors generate"
+  "_from": "github:pixelgrade/bodybuilder",
+  "_id": "bodybuilder@2.2.17",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/bodybuilder",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "bodybuilder@github:pixelgrade/bodybuilder",
+    "name": "bodybuilder",
+    "escapedName": "bodybuilder",
+    "rawSpec": "github:pixelgrade/bodybuilder",
+    "saveSpec": "github:pixelgrade/bodybuilder",
+    "fetchSpec": null,
+    "gitCommittish": null
   },
-  "author": "Daniel Paz-Soldan <daniel.pazsoldan@gmail.com>",
-  "contributors": [
-    "Nicolás Fantone",
-    "Nauval Atmaja",
-    "Ferron Hanse",
-    "Dave Cranwell",
-    "Anton Samper Rivaya",
-    "Johannes Scharlach",
-    "Jacob Gillespie"
+  "_requiredBy": [
+    "/"
   ],
-  "license": "MIT",
+  "_resolved": "github:pixelgrade/bodybuilder#3546f0dd9d9a06647420c3ea198047f1e9109bed",
+  "_spec": "bodybuilder@github:pixelgrade/bodybuilder",
+  "_where": "/Users/vladolaru/Work/local-sites/multisite.local/app/public/wp-content/plugins/pixelgrade-care",
+  "author": {
+    "name": "Daniel Paz-Soldan",
+    "email": "daniel.pazsoldan@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/danpaz/bodybuilder/issues"
+  },
+  "bundleDependencies": false,
+  "contributors": [
+    {
+      "name": "Nicolás Fantone"
+    },
+    {
+      "name": "Nauval Atmaja"
+    },
+    {
+      "name": "Ferron Hanse"
+    },
+    {
+      "name": "Dave Cranwell"
+    },
+    {
+      "name": "Anton Samper Rivaya"
+    },
+    {
+      "name": "Johannes Scharlach"
+    },
+    {
+      "name": "Jacob Gillespie"
+    }
+  ],
+  "dependencies": {
+    "lodash": "^4.17.11"
+  },
+  "deprecated": false,
+  "description": "An elasticsearch query body builder.",
   "devDependencies": {
     "all-contributors-cli": "^4.4.0",
     "babel-cli": "6.26.0",
@@ -56,13 +73,14 @@
     "typescript": "2.7.2",
     "webpack": "1.12.13"
   },
-  "dependencies": {
-    "lodash": "^4.17.11"
-  },
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/danpaz/bodybuilder"
-  },
+  "files": [
+    "browser/",
+    "lib/",
+    "src/",
+    "bodybuilder.d.ts",
+    "repl.js"
+  ],
+  "homepage": "https://github.com/danpaz/bodybuilder#readme",
   "keywords": [
     "elasticsearch",
     "bodybuilder",
@@ -72,5 +90,32 @@
     "elastic",
     "search",
     "dsl"
-  ]
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "name": "bodybuilder",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/danpaz/bodybuilder.git"
+  },
+  "scripts": {
+    "add": "all-contributors add",
+    "build": "npm run build:babel && npm run build:umd && npm run build:docs",
+    "build:babel": "babel src --out-dir lib",
+    "build:docs": "documentation build src/index.js -o docs -f html --name bodybuilder",
+    "build:umd": "webpack lib browser/bodybuilder.min.js",
+    "check": "npm run lint && npm test",
+    "generate": "all-contributors generate",
+    "git-commit": "git add docs browser && git commit -m \"Commit built files\"",
+    "git-push": "git push origin master && git push origin v$npm_package_version",
+    "lint": "eslint src test",
+    "postversion": "npm run git-push",
+    "preversion": "npm run check && npm run build && npm run git-commit",
+    "style": "npm run lint",
+    "test": "babel-tape-runner test/* | tap-spec && npm run typescript-test",
+    "typescript-test": "tsc --project typing-tests",
+    "watch:test": "tape-watch test/* -r babel-register -p tap-spec"
+  },
+  "typings": "./bodybuilder.d.ts",
+  "version": "2.2.17"
 }
